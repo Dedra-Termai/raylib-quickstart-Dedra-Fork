@@ -123,7 +123,7 @@ int main ()
 		case TITLE:
 		{
 			// TODO: Draw TITLE screen here!
-			DrawRectangle(0, 0, SCREENWIDTH, SCREENHEIGHT, GREEN);
+			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GREEN);
 			DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
 			DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
 		
@@ -131,7 +131,7 @@ int main ()
 		case GAMEPLAY:
 		{
 			// TODO: Draw GAMEPLAY screen here!
-			DrawRectangle(0, 0, SCREENWIDTH, SCREENHEIGHT, PURPLE);
+			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PURPLE);
 			DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
 			DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);
 			// draw our texture to the screen
@@ -143,7 +143,7 @@ int main ()
 		case ENDING:
 		{
 			// TODO: Draw ENDING screen here!
-			DrawRectangle(0, 0, SCREENWIDTH, SCREENHEIGHT, BLUE);
+			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLUE);
 			DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);
 			DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
 		
