@@ -25,6 +25,36 @@
 
 typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } GameScreen;
 
+//------------------------------------------------------------------------------------
+// Global Variables Declaration
+//------------------------------------------------------------------------------------
+Texture2D RaylibLogo;
+Vector2 RaylibLogoPosition = {(SCREEN_WIDTH*(.6)),(SCREEN_HEIGHT*(.75))};
+
+
+//------------------------------------------------------------------------------------
+// Module Functions Declaration
+//------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
+//Update Functions
+//--------------------------------------------------------------------------------------
+//LOGO
+
+
+//TITLE
+
+//GAMEPLAY
+
+//ENDING 
+
+
+//--------------------------------------------------------------------------------------
+//Draw Functions
+//--------------------------------------------------------------------------------------
+void DrawLogoScreen(); //LOGO
+void DrawTitleScreen();//TITLE
+void DrawGamePlayScreen();//GAMEPLAY
+void DrawEndingScreen();//ENDING
 
 
 //------------------------------------------------------------------------------------
@@ -42,7 +72,7 @@ int main ()
 	SearchAndSetResourceDir("resources");
 
 	// Load a texture from the resources directory
-	Texture wabbit = LoadTexture("wabbit_alpha.png");
+	RaylibLogo = LoadTexture("Raylib_logo.png");
 
 	//Set the Current Screen to LOGO
 	GameScreen currentScreen = LOGO;
@@ -109,43 +139,32 @@ int main ()
 		BeginDrawing();
 		
 		// Setup the back buffer for drawing (clear color and depth buffers)
-		ClearBackground(RAYWHITE);
+		ClearBackground(GRAY);
 		
 		switch(currentScreen)
 		{
 		case LOGO:
 		{
 			// TODO: Draw LOGO screen here!
-			DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
-			DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
-		
+			DrawLogoScreen();		
 		} break;
 		case TITLE:
 		{
 			// TODO: Draw TITLE screen here!
-			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GREEN);
-			DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
-			DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
+			DrawTitleScreen();
+			
 		
 		} break;
 		case GAMEPLAY:
 		{
 			// TODO: Draw GAMEPLAY screen here!
-			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PURPLE);
-			DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
-			DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);
-			// draw our texture to the screen
-			DrawTexture(wabbit, 400, 200, WHITE);
-			// draw some text using the default font
-			DrawText("Hello Raylib", 200,200,20,WHITE);
+			DrawGamePlayScreen();
 		
 		} break;
 		case ENDING:
 		{
 			// TODO: Draw ENDING screen here!
-			DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLUE);
-			DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);
-			DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
+			DrawEndingScreen();
 		
 		} break;
 		default: break;
@@ -157,12 +176,61 @@ int main ()
 	}
 
 	// De-Initialization
-    	//--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
 	// cleanup
 	// unload our texture so it can be cleaned up
-	UnloadTexture(wabbit);
+	UnloadTexture(RaylibLogo);
 
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
 	return 0;
+}
+
+
+//--------------------------------------------------------------------------------------
+//Update Functions
+//--------------------------------------------------------------------------------------
+//LOGO
+
+//TITLE
+
+//GAMEPLAY
+
+//ENDING (Rules?)
+
+
+//--------------------------------------------------------------------------------------
+//Draw Functions
+//--------------------------------------------------------------------------------------
+//LOGO
+void DrawLogoScreen(){
+	DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
+	DrawText("A PLACEHOLDER game", SCREEN_WIDTH/4, SCREEN_HEIGHT/2,40, BLACK);
+	DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
+	DrawText("Powered by ...", 175, 650, 40, BLACK); 
+	DrawTextureEx(RaylibLogo, RaylibLogoPosition, 0.0f, .5f, WHITE);
+};
+
+//TITLE
+void DrawTitleScreen(){
+	DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GREEN);
+	DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
+	DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
+};
+
+//GAMEPLAY
+void DrawGamePlayScreen(){
+	DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PURPLE);
+	DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
+	DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);
+	// draw our texture to the screen
+	// draw some text using the default font
+	//DrawText("Hello Raylib", 200,200,20,WHITE);
+};
+
+//ENDING
+void DrawEndingScreen(){
+	DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLUE);
+	DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);
+	DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
 }
