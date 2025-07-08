@@ -7,7 +7,7 @@
 *   	BSD-like license that allows static linking with closed source software
 *   Author: @Dedra-Termai
 *   Date: 06-28-2025
-*   Update: 06-28-2025
+*   Update: 07-06-2025
 *
 *
 ********************************************************************************************/
@@ -29,28 +29,22 @@ typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } GameScreen;
 // Global Variables Declaration
 //------------------------------------------------------------------------------------
 Texture2D RaylibLogo;
-Vector2 RaylibLogoPosition = {(SCREEN_WIDTH*(.6)),(SCREEN_HEIGHT*(.75))};
-
+Vector2 RaylibLogoPosition = {(SCREEN_WIDTH*.6),(SCREEN_HEIGHT*.75)};
+Texture2D YourLogoHere;
+Vector2 YourLogoHerePosition = {(SCREEN_WIDTH/2-50),(SCREEN_HEIGHT/4)};
+GameScreen currentScreen;
+int framesCounter = 0;          // Useful to count frames
 
 //------------------------------------------------------------------------------------
 // Module Functions Declaration
 //------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------
 //Update Functions
-//--------------------------------------------------------------------------------------
-//LOGO
+void UpdateLogoScreen();//LOGO
+void UpdateTitleScreen();//TITLE
+void UpdateGamePlayScreen();//GAMEPLAY
+void UpdateEndingScreen();//ENDING 
 
-
-//TITLE
-
-//GAMEPLAY
-
-//ENDING 
-
-
-//--------------------------------------------------------------------------------------
 //Draw Functions
-//--------------------------------------------------------------------------------------
 void DrawLogoScreen(); //LOGO
 void DrawTitleScreen();//TITLE
 void DrawGamePlayScreen();//GAMEPLAY
@@ -73,12 +67,10 @@ int main ()
 
 	// Load a texture from the resources directory
 	RaylibLogo = LoadTexture("Raylib_logo.png");
+	YourLogoHere = LoadTexture("yourlogohere.png");
 
 	//Set the Current Screen to LOGO
-	GameScreen currentScreen = LOGO;
-
-	//Frame counter
-	int framesCounter = 0;          // Useful to count frames
+	currentScreen = LOGO;
 
 	SetTargetFPS(60);               // Set desired framerate (frames-per-second)
 	
@@ -91,45 +83,27 @@ int main ()
 		{
 		    case LOGO:
 		    {
-			// TODO: Update LOGO screen variables here!
-		
-			framesCounter++;    // Count frames
-		
-			// Wait for 2 seconds (120 frames) before jumping to TITLE screen
-			if (framesCounter > 120)
-			{
-			    currentScreen = TITLE;
-			}
+				// TODO: Update LOGO screen variables here!
+				UpdateLogoScreen();				
+
 		    } break;
 		    case TITLE:
 		    {
-			// TODO: Update TITLE screen variables here!
-		
-			// Press enter to change to GAMEPLAY screen
-			if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
-			{
-			    currentScreen = GAMEPLAY;
-			}
+				// TODO: Update TITLE screen variables here!
+				UpdateTitleScreen();
+				
 		    } break;
 		    case GAMEPLAY:
 		    {
-			// TODO: Update GAMEPLAY screen variables here!
-		
-			// Press enter to change to ENDING screen
-			if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
-			{
-			    currentScreen = ENDING;
-			}
+				// TODO: Update GAMEPLAY screen variables here!
+				UpdateGamePlayScreen();
+				
 		    } break;
 		    case ENDING:
 		    {
-			// TODO: Update ENDING screen variables here!
-		
-			// Press enter to return to TITLE screen
-			if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
-			{
-			    currentScreen = TITLE;
-			}
+				// TODO: Update ENDING screen variables here!				
+				UpdateEndingScreen();
+			
 		    } break;
 		    default: break;
 		}
@@ -143,31 +117,31 @@ int main ()
 		
 		switch(currentScreen)
 		{
-		case LOGO:
-		{
-			// TODO: Draw LOGO screen here!
-			DrawLogoScreen();		
-		} break;
-		case TITLE:
-		{
-			// TODO: Draw TITLE screen here!
-			DrawTitleScreen();
+			case LOGO:
+			{
+				// TODO: Draw LOGO screen here!
+				DrawLogoScreen();		
+			} break;
+			case TITLE:
+			{
+				// TODO: Draw TITLE screen here!
+				DrawTitleScreen();
+				
 			
-		
-		} break;
-		case GAMEPLAY:
-		{
-			// TODO: Draw GAMEPLAY screen here!
-			DrawGamePlayScreen();
-		
-		} break;
-		case ENDING:
-		{
-			// TODO: Draw ENDING screen here!
-			DrawEndingScreen();
-		
-		} break;
-		default: break;
+			} break;
+			case GAMEPLAY:
+			{
+				// TODO: Draw GAMEPLAY screen here!
+				DrawGamePlayScreen();
+			
+			} break;
+			case ENDING:
+			{
+				// TODO: Draw ENDING screen here!
+				DrawEndingScreen();
+			
+			} break;
+			default: break;
 		}
 		// end the frame and get ready for the next one  (display frame, poll input, etc...)
 		EndDrawing();
@@ -191,13 +165,42 @@ int main ()
 //Update Functions
 //--------------------------------------------------------------------------------------
 //LOGO
+void UpdateLogoScreen(){
+	framesCounter++;    // Count frames
+			
+	// Wait for 2 seconds (120 frames) before jumping to TITLE screen
+	if (framesCounter > 240)
+	{
+		currentScreen = TITLE;
+	}
+}
 
 //TITLE
+void UpdateTitleScreen(){
+	// Press enter to change to GAMEPLAY screen
+	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+	{
+		currentScreen = GAMEPLAY;
+	}
+}
 
 //GAMEPLAY
+void UpdateGamePlayScreen(){
+	// Press enter to change to ENDING screen
+	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+	{
+		currentScreen = ENDING;
+	}
+}
 
-//ENDING (Rules?)
-
+//ENDING
+void UpdateEndingScreen(){
+	// Press enter to return to TITLE screen
+	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+	{
+		currentScreen = TITLE;
+	}
+}
 
 //--------------------------------------------------------------------------------------
 //Draw Functions
@@ -206,8 +209,9 @@ int main ()
 void DrawLogoScreen(){
 	DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
 	DrawText("A PLACEHOLDER game", SCREEN_WIDTH/4, SCREEN_HEIGHT/2,40, BLACK);
-	DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
-	DrawText("Powered by ...", 175, 650, 40, BLACK); 
+	DrawTextureEx(YourLogoHere, YourLogoHerePosition, 0.0f, .25f, WHITE);
+	DrawText("WAIT for 2 SECONDS...", 290, 550, 20, BLACK);
+	DrawText("Powered by ...", SCREEN_WIDTH/4, 650, 40, BLACK); 
 	DrawTextureEx(RaylibLogo, RaylibLogoPosition, 0.0f, .5f, WHITE);
 };
 
