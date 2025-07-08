@@ -7,7 +7,7 @@
 *   	BSD-like license that allows static linking with closed source software
 *   Author: @Dedra-Termai
 *   Date: 06-28-2025
-*   Update: 07-06-2025
+*   Update: 07-08-2025
 *
 *
 ********************************************************************************************/
