@@ -38,9 +38,27 @@ function check_raylib()
     os.chdir("../")
 end
 
+function check_raygui()
+    os.chdir("external")
+    if (os.isdir("raygui-master") == false) then
+        if (not os.isfile("raygui-master.zip")) then
+            print("Raygui not found, downloading from github")
+            local result_str, response_code = http.download("https://github.com/raysan5/raygui/archive/refs/heads/master.zip", "raygui-master.zip", {
+                progress = download_progress,
+                headers = { "From: Premake", "Referer: Premake" }
+            })
+        end
+        print("Unzipping to " .. os.getcwd())
+        zip.extract("raygui-master.zip", os.getcwd())
+        os.remove("raygui-master.zip")
+    end
+    os.chdir("../")
+end
+
 function build_externals()
      print("calling externals")
      check_raylib()
+     check_raygui()
 end
 
 function platform_defines()
@@ -89,6 +107,8 @@ end
 -- if you don't want to download raylib, then set this to false, and set the raylib dir to where you want raylib to be pulled from, must be full sources.
 downloadRaylib = true
 raylib_dir = "external/raylib-master"
+downloadRaygui = true
+raygui_dir = "external/raygui-master"
 
 workspaceName = 'MyGame'
 baseName = path.getbasename(path.getdirectory(os.getcwd()));
@@ -131,7 +151,7 @@ workspace (workspaceName)
 
     targetdir "bin/%{cfg.buildcfg}/"
 
-if (downloadRaylib) then
+if (downloadRaylib or downloadRaygui) then
     build_externals()
     end
 
@@ -172,7 +192,7 @@ if (downloadRaylib) then
         includedirs { "../src" }
         includedirs { "../include" }
 
-        links {"raylib"}
+        links {"raylib", "raygui"} -- Added raygui to link list
 
         cdialect "C17"
         cppdialect "C++17"
@@ -180,13 +200,14 @@ if (downloadRaylib) then
         includedirs {raylib_dir .. "/src" }
         includedirs {raylib_dir .."/src/external" }
         includedirs { raylib_dir .."/src/external/glfw/include" }
+        includedirs {raygui_dir .. "/src"} -- Added raygui include dir
         flags { "ShadowedVariables"}
         platform_defines()
 
         filter "action:vs*"
             defines{"_WINSOCK_DEPRECATED_NO_WARNINGS", "_CRT_SECURE_NO_WARNINGS"}
-            dependson {"raylib"}
-            links {"raylib.lib"}
+            dependson {"raylib", "raygui"} -- Added raygui as dependency
+            links {"raylib.lib", "raygui.lib"} -- Added raygui.lib for msvc
             characterset ("Unicode")
             buildoptions { "/Zc:__cplusplus" }
 
@@ -232,5 +253,16 @@ if (downloadRaylib) then
 
         filter { "system:macosx", "files:" .. raylib_dir .. "/src/rglfw.c" }
             compileas "Objective-C"
+
+        filter{}
+
+     project "raygui"
+        kind "StaticLib"
+        language "C"
+        location "build_files/"
+        targetdir "../bin/%{cfg.buildcfg}"
+
+        includedirs { raygui_dir .. "/src" }
+        files {raygui_dir .. "/src/raygui.h" }
 
         filter{}

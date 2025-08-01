@@ -11,9 +11,11 @@
 *
 *
 ********************************************************************************************/
+#define RAYGUI_IMPLEMENTATION
 
 
 #include "raylib.h"
+#include "raygui.h"
 #include "resource_dir.h"	// utility header for SearchAndSetResourceDir
 #include "stdio.h"
 
@@ -74,6 +76,9 @@ int main ()
 
 	SetTargetFPS(60);               // Set desired framerate (frames-per-second)
 	
+
+	bool showMessageBox = false;
+
 	// game loop
 	while (!WindowShouldClose())		// run the loop untill the user presses ESCAPE or presses the Close button on the window
 	{
@@ -126,6 +131,15 @@ int main ()
 			{
 				// TODO: Draw TITLE screen here!
 				DrawTitleScreen();
+				if (GuiButton((Rectangle){ 24, 24, 120, 30 }, "#191#Show Message")) showMessageBox = true;
+
+            	if (showMessageBox)
+				{
+					int result = GuiMessageBox((Rectangle){ 85, 70, 250, 100 },
+						"#191#Message Box", "Hi! This is a message!", "Nice;Cool");
+
+					if (result >= 0) showMessageBox = false;
+				}
 				
 			
 			} break;
@@ -178,7 +192,7 @@ void UpdateLogoScreen(){
 //TITLE
 void UpdateTitleScreen(){
 	// Press enter to change to GAMEPLAY screen
-	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+	if (IsKeyPressed(KEY_ENTER))// || IsGestureDetected(GESTURE_TAP))
 	{
 		currentScreen = GAMEPLAY;
 	}
